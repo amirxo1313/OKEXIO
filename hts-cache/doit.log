@@ -1,0 +1,8 @@
+https://ok-ex.io -O "C:\\Users\\Amir\\Desktop\\ok-ex.io" -w -r100 -%e0 -a -s0 -F "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" -A409600 -%c4 -c8 -q
+File generated automatically on Mon, 07 Jul 2025 01:09:51, do NOT edit
+
+To update a mirror, just launch httrack without any parameters
+The existing cache will be used (and modified)
+To have other options, retype all parameters and launch HTTrack
+To continue an interrupted mirror, just launch httrack without any parameters
+
