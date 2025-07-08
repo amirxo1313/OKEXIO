@@ -1,0 +1,37 @@
+<?php
+session_start();
+$pdo = new PDO("mysql:host=db;dbname=user_db", "myuser", "mypassword");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit;
+}
+
+$stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+$stmt->execute([$_SESSION["user_id"]]);
+$user = $stmt->fetch();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $new_email = $_POST["email"];
+    $new_password = !empty($_POST["password"]) ? password_hash($_POST["password"], PASSWORD_DEFAULT) : $user["password"];
+    $stmt = $pdo->prepare("UPDATE users SET email = ?, password = ? WHERE id = ?");
+    $stmt->execute([$new_email, $new_password, $_SESSION["user_id"]]);
+    echo "اطلاعات به‌روزرسانی شد!";
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>پنل کاربری</title>
+</head>
+<body>
+    <h2>پنل کاربری - خوش آمدید <?php echo htmlspecialchars($user["username"]); ?></h2>
+    <form method="post">
+        <label>ایمیل:</label><input type="email" name="email" value="<?php echo htmlspecialchars($user["email"]); ?>" required><br>
+        <label>رمز جدید (خالی بگذارید اگر نمی‌خواهید تغییر کند):</label><input type="password" name="password"><br>
+        <button type="submit">به‌روزرسانی</button>
+    </form>
+    <a href="logout.php">خروج</a>
+</body>
+</html>

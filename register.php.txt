@@ -1,0 +1,33 @@
+<?php
+$pdo = new PDO("mysql:host=db;dbname=user_db", "myuser", "mypassword");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST["username"];
+    $email = $_POST["email"];
+    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+
+    try {
+        $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $email, $password]);
+        echo "ثبت‌نام با موفقیت انجام شد!";
+    } catch (PDOException $e) {
+        echo "خطا: " . $e->getMessage();
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ثبت‌نام</title>
+</head>
+<body>
+    <h2>ثبت‌نام</h2>
+    <form method="post">
+        <label>نام کاربری:</label><input type="text" name="username" required><br>
+        <label>ایمیل:</label><input type="email" name="email" required><br>
+        <label>رمز عبور:</label><input type="password" name="password" required><br>
+        <button type="submit">ثبت‌نام</button>
+    </form>
+</body>
+</html>
